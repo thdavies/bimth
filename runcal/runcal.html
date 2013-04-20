@@ -1,0 +1,53 @@
+
+<html>
+<head>
+<title>RunCalculendar</title>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="runcal.js"></script>
+<script type="text/javascript">
+console.log("runcal 0.0.1");
+
+function initcells() {
+    $("#meters").val( "42195" );
+	$("#seconds").val( "13020" );
+	$("#miles").val( mtomi( $("#meters").val() ) );
+}
+
+function updatecells( $id ) {
+	//console.log( $id );
+	if( $id == "meters" ) {
+		$("#meters").val( parseInt( $("#meters").val() ) );
+		$("#miles").val( mtomi( $("#meters").val() ) );
+		console.log( "converted M to Mi" );
+	}
+	if( $id == "miles" ) {
+		$("#miles").val( parseFloat( $("#miles").val() ).toFixed(2) );
+		console.log( "rounded miles" );
+		$("#meters").val( mitom( $("#miles").val() ) );
+		console.log( "converted Miles to Meters" );
+	}
+	$rc = Runcal( parseInt( $("#meters").val() ), parseInt( $("#seconds").val() ) );
+	$rc = parseInt( ( $rc * 1000 ) + 0.5 );
+	$("#out").val( $rc );
+}
+</script>
+</head>
+<body onload="initcells();">
+<form>
+<table>
+  <tr>
+    <td align="right">meters:</td>
+	<td><input type="text" id="meters" onchange="updatecells( this.id );"></td>
+  </tr>
+  <tr><td colspan="2"><hr></td></tr>
+  <tr>
+    <td align="right">seconds:</td>
+	<td><input type="text" id="seconds" onchange="updatecells( this.id );"></td>
+  </tr>
+  <tr><td colspan="2"><hr></td></tr>
+  <tr><td></td><td><input type="text" id="out" disabled></td></tr>
+  <tr><td></td><td><input type="text" id="miles" onchange="updatecells( this.id );"></td></tr>
+</table>
+</form>
+</body>
+</html>
