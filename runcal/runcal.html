@@ -4,12 +4,35 @@
 <title>RunCalculendar</title>
 <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="runcal.js"></script>
+</head>
+<body onload="initcells();">
+<form>
+<table>
+<tr><td colspan="2">distance</td></tr>
+  <tr><td align="right">meters:</td><td><input type="text" id="meters" onchange="updatecells( this.id );"></td></tr>
+  <tr><td align="right">miles:</td><td><input type="text" id="miles" onchange="updatecells( this.id );"></td></tr>
+
+<tr><td colspan="2"><hr></td></tr>
+  <tr><td colspan="2">time</td></tr>
+  <tr><td align="right">hh:mm:ss:</td><td>
+  <input type="text" id="hh" size="3" onchange="updatecells( this.id );">:
+  <input type="text" id="mm" size="3" onchange="updatecells( this.id );">:
+  <input type="text" id="ss" size="3" onchange="updatecells( this.id );">
+  </td></tr>
+  <tr><td align="right">seconds:</td><td><input type="text" id="seconds" onchange="updatecells( this.id );"></td></tr>
+
+<tr><td colspan="2"><hr></td></tr>
+  <tr><td></td><td><input type="text" size="6" id="out" disabled></td></tr>
+</table>
+</form>
+</body>
+</html>
 <script type="text/javascript">
 console.log("runcal 0.0.1");
 
 function initcells() {
     $("#meters").val( "42195" );
-	$("#seconds").val( "13020" );
+    $("#seconds").val( "13020" );
 	$("#miles").val( mtomi( $("#meters").val() ) );
 }
 
@@ -26,28 +49,14 @@ function updatecells( $id ) {
 		$("#meters").val( mitom( $("#miles").val() ) );
 		console.log( "converted Miles to Meters" );
 	}
+    if( $id == "seconds" ) {
+        $("#seconds").val( parseInt( $("#seconds").val() ) );
+        $("#hh").val( parseInt( $("#seconds").val() / 3600 ) );
+        $("#mm").val( ( parseInt( $("#seconds").val() / 60 ) % 60 ) );
+        $("#ss").val( parseInt( $("#seconds").val() % 60 ) );
+    }
 	$rc = Runcal( parseInt( $("#meters").val() ), parseInt( $("#seconds").val() ) );
 	$rc = parseInt( ( $rc * 1000 ) + 0.5 );
 	$("#out").val( $rc );
 }
 </script>
-</head>
-<body onload="initcells();">
-<form>
-<table>
-  <tr>
-    <td align="right">meters:</td>
-	<td><input type="text" id="meters" onchange="updatecells( this.id );"></td>
-  </tr>
-  <tr><td colspan="2"><hr></td></tr>
-  <tr>
-    <td align="right">seconds:</td>
-	<td><input type="text" id="seconds" onchange="updatecells( this.id );"></td>
-  </tr>
-  <tr><td colspan="2"><hr></td></tr>
-  <tr><td></td><td><input type="text" id="out" disabled></td></tr>
-  <tr><td></td><td><input type="text" id="miles" onchange="updatecells( this.id );"></td></tr>
-</table>
-</form>
-</body>
-</html>
